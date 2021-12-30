@@ -9,7 +9,6 @@ pinMode(LED, OUTPUT);
 void loop() {
 const int light = analogRead(A0);
 const int brightness = map(light, 0, 1023, 0, 255);
-
 analogWrite(LED, brightness);
 
 Serial.print("Analog: ");
