@@ -1,0 +1,6 @@
+{
+    "arduino.path": "C:\\Program Files (x86)\\Arduino",
+    "arduino.commandPath": "arduino_debug.exe",
+    "output": ".\\build",
+    "port": "COM3"
+}
