@@ -1,6 +1,7 @@
 #include <OneWire.h>
 #include <TFT.h>
 #include <SPI.h>
+#include <UTFT.h>
 
 #define cs 10
 #define dc 9
@@ -15,16 +16,15 @@ float temperature = 0;
 long lastUpdateTime = 0;
 const int TEMP_UPDATE_TIME = 1000;
 char tempPrintout[6];
-
+int timing;
 void setup() {
-  Serial.begin(9600);
-  
+
   // инициализируем экран
 TFTscreen.begin();
 // ставим черный фон
-TFTscreen.background(0, 0, 0);
+TFTscreen.background(255, 255, 255);
 // пишем текст на экран белого цвета
-TFTscreen.stroke(255, 255, 255);
+TFTscreen.stroke(0, 0, 0);
 // задаем размер текста
 TFTscreen.setTextSize(2);
 // передвигаем курсор в левый верхний угол, чтобы начать писать оттуда
@@ -36,30 +36,27 @@ TFTscreen.text("Temperature:\n", 5, 40);
 }
 
 void loop() {
-  
+  detectTemperature();
 // считываем значения с потенциометра в переменную типа string
-String sensorVal = String(analogRead(A0));
 // преобразуем полученную строку в массив символов
+String sensorVal = String(analogRead(A0));
 sensorVal.toCharArray(sensorPrintout, 5);
-TFTscreen.stroke(255, 255, 255);
-// выводим значения на экран
-TFTscreen.text(sensorPrintout, 5, 20);
-delay(1000);
-TFTscreen.stroke(0, 0, 0);
-TFTscreen.text(sensorPrintout, 5, 20);
-
 String tempVal = String(temperature);
 tempVal.toCharArray(tempPrintout, 6);
-TFTscreen.stroke(255, 255, 255);
-TFTscreen.text(tempPrintout, 10, 70);
-delay(1000);
+// выводим значения на экран
+TFTscreen.stroke(0, 0, 0);
+TFTscreen.text(sensorPrintout, 5, 20);
 TFTscreen.stroke(0,0,0);
-TFTscreen.text(tempPrintout, 10, 70);
+TFTscreen.text(tempPrintout, 5, 70);
+delay(100);
+TFTscreen.stroke(255, 255, 255);
+TFTscreen.text(tempPrintout, 5, 70);
+TFTscreen.stroke(255, 255, 255);
+TFTscreen.text(sensorPrintout, 5, 20);
 
- detectTemperature();
- Serial.println(temperature);
- 
+ //Serial.println(temperature);
 }
+
 
 float detectTemperature(){
 
