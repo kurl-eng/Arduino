@@ -35,7 +35,7 @@ void setup() {
 
 // Tick counter function
 void buttontick() {
-  counter ++;
+  counter++;
 }
 
 // Set flag function

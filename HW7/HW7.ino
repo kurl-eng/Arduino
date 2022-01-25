@@ -4,7 +4,6 @@
 const int ledPin0 = 3;
 const int ledPin1 = 5;
 const int ledPin2 = 7;
-const int ledPin13 = 13;
 // LED flags
 bool ledState0 = 0;
 bool ledState1 = 0;
@@ -36,7 +35,7 @@ void setup() {
 
 // Tick counter function
 void buttontick() {
-  counter ++;
+  counter++;
 }
 
 // Set flag function
@@ -80,9 +79,9 @@ void ledIndication() {
 }
 
 void loop() {
-  Serial.println(counter++); 
+  Serial.println(counter++);
+  delay(2000);
   if (flag) {
-   delay(2000);
    ledIndication();  
    flag = false;
    goToSleep();
