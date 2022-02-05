@@ -2,6 +2,8 @@
 #include <TFT.h>
 #include <SPI.h>
 #include <UTFT.h>
+#include <ThreeWire.h>  
+#include <RtcDS1302.h>
 
 #define cs 10
 #define dc 9
@@ -10,8 +12,7 @@ TFT TFTscreen = TFT(cs, dc, rst);
 // создадим массив для вывода на экран значений
 char sensorPrintout[5];
 
-
-OneWire ds(2);
+OneWire ds(A0);
 float temperature = 0;
 long lastUpdateTime = 0;
 const int TEMP_UPDATE_TIME = 1000;
@@ -48,7 +49,7 @@ TFTscreen.stroke(0, 0, 0);
 TFTscreen.text(sensorPrintout, 5, 20);
 TFTscreen.stroke(0,0,0);
 TFTscreen.text(tempPrintout, 5, 70);
-delay(100);
+delay(1000);
 TFTscreen.stroke(255, 255, 255);
 TFTscreen.text(tempPrintout, 5, 70);
 TFTscreen.stroke(255, 255, 255);
