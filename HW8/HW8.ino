@@ -55,7 +55,8 @@ TFTscreen.text("Time: \n", 80, 5);
 TFTscreen.text("Temp. Outside: \n", 10, 25);
 TFTscreen.text("Temp. Inside: \n", 10, 35);
 TFTscreen.text("Humidity: \n", 10, 45);
-TFTscreen.text("Push to use sensors", 10, 150);
+TFTscreen.text("Hold to wake up", 10, 140);
+TFTscreen.text("Click to sleep", 10, 150);
 }
 
 void setup() {
@@ -67,12 +68,13 @@ dht.begin();
 attachInterrupt(0, isr, FALLING);
 pinMode(ledPin, OUTPUT);
 pinMode(inputPin, INPUT_PULLUP);
-goToSleep();
+//goToSleep();
 }
 
 void loop() {
-  if (flag) {
-// RTC module:
+  enc1.tick(); 
+  flag = true;
+  // RTC module:
 RtcDateTime date = Rtc.GetDateTime();
 rtcPrintDate(date);
 RtcDateTime time = Rtc.GetDateTime();
@@ -112,157 +114,20 @@ TFTscreen.text(humInsidePrint, 95, 45);
     TFTscreen.text(tempInsidePrint, 95, 35);
     TFTscreen.text(humInsidePrint, 95, 45);
   }
-
-enc1.tick();  // отработка
-
-  while (enc1.isRight()) {
-    if (enc1.isRight()) {
-      TFTscreen.stroke(255, 255, 255);
-      TFTscreen.text(">\n", 3, 15);
-      TFTscreen.text(">\n", 3, 25);
-      TFTscreen.text(">\n", 3, 35);
-      TFTscreen.text(">\n", 3, 45);
-      TFTscreen.text(">\n", 3, 150);
-      TFTscreen.stroke(0, 0, 0);
-      TFTscreen.text(">\n", 3, 5);
-    } 
-    if (enc1.isRight()) {
-      TFTscreen.stroke(255, 255, 255);
-      TFTscreen.text(">\n", 3, 5);
-      TFTscreen.text(">\n", 3, 25);
-      TFTscreen.text(">\n", 3, 35);
-      TFTscreen.text(">\n", 3, 45);
-      TFTscreen.text(">\n", 3, 150);
-      TFTscreen.stroke(0, 0, 0);
-      TFTscreen.text(">\n", 3, 15);
-      } 
-
-    if (enc1.isRight()) {
-      TFTscreen.stroke(255, 255, 255);
-      TFTscreen.text(">\n", 3, 5);
-      TFTscreen.text(">\n", 3, 15);
-      TFTscreen.text(">\n", 3, 35);
-      TFTscreen.text(">\n", 3, 45);
-      TFTscreen.text(">\n", 3, 150);
-      TFTscreen.stroke(0, 0, 0);
-      TFTscreen.text(">\n", 3, 25);
-    }  
-    
-    if (enc1.isRight()) {
-      TFTscreen.stroke(255, 255, 255);
-      TFTscreen.text(">\n", 3, 5);
-      TFTscreen.text(">\n", 3, 15);
-      TFTscreen.text(">\n", 3, 25);
-      TFTscreen.text(">\n", 3, 45);
-      TFTscreen.text(">\n", 3, 150);
-      TFTscreen.stroke(0, 0, 0);
-      TFTscreen.text(">\n", 3, 35);
-
-    } if (enc1.isRight()) {
-      TFTscreen.stroke(255, 255, 255);
-      TFTscreen.text(">\n", 3, 5);
-      TFTscreen.text(">\n", 3, 15);
-      TFTscreen.text(">\n", 3, 25);
-      TFTscreen.text(">\n", 3, 35);
-      TFTscreen.text(">\n", 3, 150);
-      TFTscreen.stroke(0, 0, 0);
-      TFTscreen.text(">\n", 3, 45);
-    } 
-
-    if (enc1.isRight()) {
-      TFTscreen.stroke(255, 255, 255);
-      TFTscreen.text(">\n", 3, 5);
-      TFTscreen.text(">\n", 3, 15);
-      TFTscreen.text(">\n", 3, 25);
-      TFTscreen.text(">\n", 3, 35);
-      TFTscreen.text(">\n", 3, 45);
-      TFTscreen.stroke(0, 0, 0);
-      TFTscreen.text(">\n", 3, 150);
-    }
-  }
-
-  while (enc1.isLeft()) {
-
-    if (enc1.isLeft()) {
-      TFTscreen.stroke(255, 255, 255);
-      TFTscreen.text(">\n", 3, 15);
-      TFTscreen.text(">\n", 3, 25);
-      TFTscreen.text(">\n", 3, 35);
-      TFTscreen.text(">\n", 3, 45);
-      TFTscreen.text(">\n", 3, 150);
-      TFTscreen.stroke(0, 0, 0);
-      TFTscreen.text(">\n", 3, 5);
-    } 
-    
-    if (enc1.isLeft()) {
-      TFTscreen.stroke(255, 255, 255);
-      TFTscreen.text(">\n", 3, 5);
-      TFTscreen.text(">\n", 3, 25);
-      TFTscreen.text(">\n", 3, 35);
-      TFTscreen.text(">\n", 3, 45);
-      TFTscreen.text(">\n", 3, 150);
-      TFTscreen.stroke(0, 0, 0);
-      TFTscreen.text(">\n", 3, 15);
-    } 
-
-    if (enc1.isLeft()) {
-      TFTscreen.stroke(255, 255, 255);
-      TFTscreen.text(">\n", 3, 5);
-      TFTscreen.text(">\n", 3, 15);
-      TFTscreen.text(">\n", 3, 35);
-      TFTscreen.text(">\n", 3, 45);
-      TFTscreen.text(">\n", 3, 150);
-      TFTscreen.stroke(0, 0, 0);
-      TFTscreen.text(">\n", 3, 25);
-    } 
-
-    if (enc1.isLeft()) {
-      TFTscreen.stroke(255, 255, 255);
-      TFTscreen.text(">\n", 3, 5);
-      TFTscreen.text(">\n", 3, 15);
-      TFTscreen.text(">\n", 3, 25);
-      TFTscreen.text(">\n", 3, 45);
-      TFTscreen.text(">\n", 3, 150);
-      TFTscreen.stroke(0, 0, 0);
-      TFTscreen.text(">\n", 3, 35);
-    } 
-
-    if (enc1.isLeft()) {
-      TFTscreen.stroke(255, 255, 255);
-      TFTscreen.text(">\n", 3, 5);
-      TFTscreen.text(">\n", 3, 15);
-      TFTscreen.text(">\n", 3, 25);
-      TFTscreen.text(">\n", 3, 35);
-      TFTscreen.text(">\n", 3, 150);
-      TFTscreen.stroke(0, 0, 0);
-      TFTscreen.text(">\n", 3, 45);
-    }
-
-    if (enc1.isLeft()) {
-      TFTscreen.stroke(255, 255, 255);
-      TFTscreen.text(">\n", 3, 5);
-      TFTscreen.text(">\n", 3, 15);
-      TFTscreen.text(">\n", 3, 25);
-      TFTscreen.text(">\n", 3, 35);
-      TFTscreen.text(">\n", 3, 45);
-      TFTscreen.stroke(0, 0, 0);
-      TFTscreen.text(">\n", 3, 150);
-    }
-  }
-  if (enc1.isRightH()) Serial.println("Right holded"); // если было удержание + поворот
-  if (enc1.isLeftH()) Serial.println("Left holded");
-  
+ if (enc1.isClick()) {
   flag = false;
   goToSleep();
+  } else if (enc1.isHold()) {
+    setFlag();
   }
 }
 
 void setFlag() {
-flag = true; }
+flag = true; 
+}
 
 void isr() {
   enc1.tick();  // отработка в прерывании
-  flag = true;
 }
 
 void goToSleep() {
