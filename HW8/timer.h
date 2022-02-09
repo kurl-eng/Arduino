@@ -17,5 +17,5 @@ class Timer {
             }
         private:
             uint32_t _tmr;
-            int _period;
+            uint32_t _period;
 };

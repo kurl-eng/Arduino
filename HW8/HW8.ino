@@ -4,13 +4,14 @@
 #include <TFT.h>
 #include <SPI.h>
 TFT TFTscreen = TFT(10, 9, 8);
-Timer refresh(2000);
+Timer refreshWhite(3000);
+Timer refreshBlack(3000);
 
 // Outside temperature module
 #include "DS18B20.h"
 Temperature dallas;
 char printDallas [6];
-Timer tempTimer(1500);
+Timer tempTimer(1000);
 
 // DHT22 AM2302 :
 // Inside temerature and humidity sensor
@@ -40,9 +41,9 @@ char printDate[11], printTime[10], printD[11], printT[10];
 Encoder enc1(CLK, DT, SW);
 
 #include <avr/sleep.h>
-const int ledPin = 13; const int inputPin = 2;
+const int ledPin4 = A4;
+const int ledPin5 = A5;
 volatile boolean flag;
-
 
 void TFTinit() {
 TFTscreen.begin();
@@ -66,12 +67,28 @@ Rtc.Begin();
 dallas.begin();
 dht.begin();
 attachInterrupt(0, isr, FALLING);
-pinMode(ledPin, OUTPUT);
-pinMode(inputPin, INPUT_PULLUP);
+pinMode(ledPin4, OUTPUT);
+pinMode(ledPin5, OUTPUT);
 //goToSleep();
 }
 
+int blink4_delay = 1000;
+int blink5_delay = 2000;
+uint32_t next4 = 0;
+uint32_t next5 = 0;
+
 void loop() {
+
+if (millis() > next4) {
+  digitalWrite(ledPin4, !digitalRead(ledPin4));
+  next4 = millis() + blink4_delay;
+}
+
+if (millis() > next5) {
+  digitalWrite(ledPin5, !digitalRead(ledPin5));
+  next5 = millis() + blink5_delay;
+}
+  
   enc1.tick(); 
   flag = true;
   // RTC module:
@@ -99,21 +116,22 @@ String humInside = String(h);
 humInside.toCharArray(humInsidePrint, 6);
 
 // Screen output refresh frames
-
-TFTscreen.stroke(0,0,0);
-TFTscreen.text(printDate, 10, 15);
-TFTscreen.text(printTime, 80, 15);
-TFTscreen.text(printDallas, 95, 25);
-TFTscreen.text(tempInsidePrint, 95, 35);
-TFTscreen.text(humInsidePrint, 95, 45);
-  if (refresh.ready()) {
-    TFTscreen.stroke(255, 255, 255);
-    TFTscreen.text(printDate, 10, 15);
-    TFTscreen.text(printTime, 80, 15);
-    TFTscreen.text(printDallas, 95, 25);
-    TFTscreen.text(tempInsidePrint, 95, 35);
-    TFTscreen.text(humInsidePrint, 95, 45);
-  }
+if (refreshBlack.ready()) {
+  TFTscreen.stroke(0,0,0);
+  TFTscreen.text(printDate, 10, 15);
+  TFTscreen.text(printTime, 80, 15);
+  TFTscreen.text(printDallas, 95, 25);
+  TFTscreen.text(tempInsidePrint, 95, 35);
+  TFTscreen.text(humInsidePrint, 95, 45);
+}
+if (refreshWhite.ready()) {
+  TFTscreen.stroke(255, 255, 255);
+  TFTscreen.text(printDate, 10, 15);
+  TFTscreen.text(printTime, 80, 15);
+  TFTscreen.text(printDallas, 95, 25);
+  TFTscreen.text(tempInsidePrint, 95, 35);
+  TFTscreen.text(humInsidePrint, 95, 45);
+}
  if (enc1.isClick()) {
   flag = false;
   goToSleep();
